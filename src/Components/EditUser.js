@@ -1,12 +1,14 @@
 import React, {Component} from 'react'
-import { Link, redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
-import { connect, Connect } from 'react-redux'
-import { userInfo } from '../redux/allActions'
+import { connect   } from 'react-redux'
+import { updateUser, userInfo } from '../redux/allActions'
 
 class EditUser extends Component {
     constructor(props){
       super(props)
+
+      console.log("props", props)
 
       this.state = {
         name : '',
@@ -16,17 +18,31 @@ class EditUser extends Component {
       }
     }  
     componentDidMount(){ 
-      this.props.getUserDetail(this.props.match.params.id)
-        // console.log(this.props);
+      console.log("this.props", this.props.myUsers.items);
+      
+      this.props.getUserDetail(this.props.myUsers.items[1].id) 
     }
-    componentDedUpdate(){
 
+    componentDidUpdate(){
+        if(this.state.name == ''){
+            const { name, email, phone } = this.props.myUsers.user;
+            console.log("name", name);
+            this.state({
+              name: name,
+              email: email,
+              phone: phone
+            })
+        }
     }
     inputHandler = (e)=>{
       this.setState({[e.target.name]: e.target.value})
     }
     submitButton = async()=>{
-
+        const newData = Object.assign(this.props.myUsers.user, this.state)
+        // console.log(newData);
+        this.props.updateUserInfo(newData)
+        this.setState({redirect : true})
+        // window.location.href = '/home';
     }
     render(){
       const {name, email, phone} = this.state
@@ -79,13 +95,16 @@ class EditUser extends Component {
 
 const mapStateToProps = (state)=>{
   return {
-    myUser : state.user
+    myUsers : state.user
   }
 }
 
 const mapDispatchToProps = (dispatch)=>{
   return {
-    getUserDetail : (id)=> (dispatch(userInfo))
+    getUserDetail : (id)=> { (dispatch(userInfo(id))) },
+    updateUserInfo : (data)=> { dispatch(updateUser(data)) }
+
+  
   }
 }
 export default connect(mapStateToProps,mapDispatchToProps) (EditUser)

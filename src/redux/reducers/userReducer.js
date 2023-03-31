@@ -17,20 +17,18 @@ const userReducer = (state='',action)=>{
 
             case 'USER_INFO':
             // console.log('===',state,'===',action);
-            let userDetail = state.items.filter((user)=> user.id == action.payload)
+            let userDetail = state.items.filter((user)=> user.id === action.payload)
             return{
                 ...state,
-                user: (userDetail.length>0 ? userDetail[0]:{})
-
-                return{
-                    ...state,
-                    user: (userDetail.length>0 ? userDetail[0]:{})
-                }
+                user: (userDetail.length>0) ? userDetail[0]: {}
             }
-            // return{
-            //     ...state,
-            //     items: state.items.filter((user)=> user.id !== action.payload)
-            // }
+
+            case 'USER_UPDATE':
+            // console.log('===',state,'===',action);   
+            return{
+                ...state,
+                items: state.items.filter((user)=> user.id !== action.payload.id ? action.payload : user)
+            }
     
         default:
             return state

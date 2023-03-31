@@ -21,7 +21,8 @@ function Registration() {
         // console.log(inputField);
         dispatch(userRegister(inputField))
         // history.push('/home')
-        navigate.push('/home')
+        // navigate.push('/home')
+        navigate('/home')
     }
   return (
     <div className='container'>

@@ -13,15 +13,17 @@ export const deleteUser = (id)=>{
 }
 
 export const userInfo = (id)=>{
+
+    console.log("data id", id);
     return {
         type: 'USER_INFO',
         payload: id
     }
 }
 
-export const userUpdate = (data)=>{
+export const updateUser = (data)=>{
     return {
-        type: 'USER_USER',
+        type: 'USER_UPDATE',
         payload: data
     }
 }
